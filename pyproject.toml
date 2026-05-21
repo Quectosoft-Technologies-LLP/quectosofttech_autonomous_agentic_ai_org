@@ -72,7 +72,7 @@ Repository  = "https://github.com/quectosofttech/quectosofttech_autonomous_agent
 Issues      = "https://github.com/quectosofttech/quectosofttech_autonomous_agentic_ai_org/issues"
 Discussions = "https://github.com/quectosofttech/quectosofttech_autonomous_agentic_ai_org/discussions"
 Sponsor     = "https://github.com/sponsors/quectosofttech"
-Author      = "mailto:subrit@quectosofttech.com"
+Author      = "https://github.com/subrit"
 
 [tool.ruff]
 line-length = 100
