@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "quectosofttech-autonomous-agentic-ai-org"
+version = "0.3.2"
+description = "A fully autonomous multi-tier AI organisation — Board to git commit — with RAID governance, 5-layer memory, isolated workspaces, and 80+ specialised agents"
+authors = [
+    {name = "Subrit Dikshit", email = "subrit@quectosofttech.com"}
+]
+maintainers = [
+    {name = "Subrit Dikshit", email = "subrit@quectosofttech.com"}
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.12"
+keywords = [
+    "agentic-ai", "multi-agent", "autonomous-organisation", "llm",
+    "hermes3", "openclaw", "RAID-governance", "BFSI", "MCP",
+    "enterprise-ai", "autonomous-software-engineering", "quectosoft"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.34",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "chromadb>=0.6",
+    "redis>=5.2",
+    "asyncpg>=0.30",
+    "sqlalchemy>=2.0",
+    "alembic>=1.14",
+    "neo4j>=5.27",
+    "httpx>=0.28",
+    "mcp>=1.5",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "celery[redis]>=5.4",
+    "structlog>=24.4",
+    "prometheus-client>=0.21",
+    "langchain-core>=0.3",
+    "anthropic>=0.40",
+    "openai>=1.55",
+    "ollama>=0.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "pre-commit>=4.0",
+    "factory-boy>=3.3",
+    "httpx>=0.28",
+]
+
+[project.urls]
+Homepage    = "https://github.com/quectosofttech/quectosofttech_autonomous_agentic_ai_org"
+Repository  = "https://github.com/quectosofttech/quectosofttech_autonomous_agentic_ai_org"
+Issues      = "https://github.com/quectosofttech/quectosofttech_autonomous_agentic_ai_org/issues"
+Discussions = "https://github.com/quectosofttech/quectosofttech_autonomous_agentic_ai_org/discussions"
+Sponsor     = "https://github.com/sponsors/quectosofttech"
+Author      = "mailto:subrit@quectosofttech.com"
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "UP", "B", "SIM"]
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
