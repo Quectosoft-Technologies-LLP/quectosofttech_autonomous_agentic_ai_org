@@ -76,8 +76,10 @@ Author      = "https://github.com/subrit"
 
 [tool.ruff]
 line-length = 100
-select = ["E", "F", "I", "UP", "B", "SIM"]
 target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
 python_version = "3.12"
