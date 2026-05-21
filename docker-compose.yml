@@ -1,0 +1,100 @@
+# docker-compose.yml — Quectosoft Technologies LLP
+# Author: Subrit Dikshit <subrit@quectosofttech.com>
+# Usage: make docker-up
+
+version: "3.9"
+
+networks:
+  quecto-internal:
+    driver: bridge
+
+services:
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: quecto_ai
+      POSTGRES_USER: quecto
+      POSTGRES_PASSWORD: quecto
+    ports: ["5432:5432"]
+    networks: [quecto-internal]
+    volumes: [postgres_data:/var/lib/postgresql/data]
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    networks: [quecto-internal]
+
+  chromadb:
+    image: chromadb/chroma:latest
+    ports: ["8001:8000"]
+    networks: [quecto-internal]
+    volumes: [chroma_data:/chroma/.chroma]
+
+  neo4j:
+    image: neo4j:5
+    environment:
+      NEO4J_AUTH: neo4j/change_me_in_production
+    ports: ["7474:7474", "7687:7687"]
+    networks: [quecto-internal]
+    volumes: [neo4j_data:/data]
+
+  agent_memory_mcp:
+    build: { context: ., dockerfile: docker/Dockerfile.memory_mcp }
+    args: { MCP_SERVER: agent_memory_mcp }
+    environment: { REDIS_URL: redis://redis:6379/0 }
+    ports: ["9001:9000"]
+    networks: [quecto-internal]
+    depends_on: [redis]
+
+  team_memory_mcp:
+    build: { context: ., dockerfile: docker/Dockerfile.memory_mcp }
+    args: { MCP_SERVER: team_memory_mcp }
+    environment: { CHROMADB_HOST: chromadb, CHROMADB_PORT: 8000 }
+    ports: ["9002:9000"]
+    networks: [quecto-internal]
+    depends_on: [chromadb]
+
+  dept_memory_mcp:
+    build: { context: ., dockerfile: docker/Dockerfile.memory_mcp }
+    args: { MCP_SERVER: dept_memory_mcp }
+    environment: { CHROMADB_HOST: chromadb, CHROMADB_PORT: 8000 }
+    ports: ["9003:9000"]
+    networks: [quecto-internal]
+    depends_on: [chromadb]
+
+  project_memory_mcp:
+    build: { context: ., dockerfile: docker/Dockerfile.memory_mcp }
+    args: { MCP_SERVER: project_memory_mcp }
+    environment: { CHROMADB_HOST: chromadb, CHROMADB_PORT: 8000 }
+    ports: ["9004:9000"]
+    networks: [quecto-internal]
+    depends_on: [chromadb]
+
+  org_memory_mcp:
+    build: { context: ., dockerfile: docker/Dockerfile.memory_mcp }
+    args: { MCP_SERVER: org_memory_mcp }
+    environment:
+      CHROMADB_HOST: chromadb
+      CHROMADB_PORT: 8000
+      POSTGRES_URL: postgresql://quecto:quecto@postgres:5432/quecto_ai
+    ports: ["9005:9000"]
+    networks: [quecto-internal]
+    depends_on: [chromadb, postgres]
+
+  platform:
+    build: { context: ., dockerfile: docker/Dockerfile.agent }
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      CHROMADB_HOST: chromadb
+      CHROMADB_PORT: 8000
+      POSTGRES_URL: postgresql://quecto:quecto@postgres:5432/quecto_ai
+      NEO4J_URI: bolt://neo4j:7687
+    ports: ["8000:8000"]
+    networks: [quecto-internal]
+    depends_on: [postgres, redis, chromadb, neo4j]
+
+volumes:
+  postgres_data:
+  chroma_data:
+  neo4j_data:
