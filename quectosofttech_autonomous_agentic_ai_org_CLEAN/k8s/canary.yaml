@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quectosoft-agentic-org-canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quectosoft-agentic-org
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: quectosoft-agentic-org
+        track: canary
+    spec:
+      serviceAccountName: quectosoft-agentic-org
+      containers:
+        - name: api
+          image: quectosoft/agentic-org:canary
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000

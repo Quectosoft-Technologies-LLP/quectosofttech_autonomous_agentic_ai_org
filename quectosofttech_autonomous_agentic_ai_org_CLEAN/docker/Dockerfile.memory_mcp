@@ -1,0 +1,10 @@
+FROM python:3.11-slim
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+WORKDIR /app
+COPY . /app
+RUN pip install --no-cache-dir -e .
+RUN chown -R appuser:appgroup /app
+USER appuser
+CMD ["python", "-c", "from mcp_servers.postgres_mcp.server import MCPServer; print(MCPServer().health())"]

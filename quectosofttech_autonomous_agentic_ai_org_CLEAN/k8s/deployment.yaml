@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quectosoft-agentic-org
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quectosoft-agentic-org
+  template:
+    metadata:
+      labels:
+        app: quectosoft-agentic-org
+    spec:
+      serviceAccountName: quectosoft-agentic-org
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: api
+          image: quectosoft/agentic-org:latest
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '256Mi'
+            limits:
+              cpu: '500m'
+              memory: '512Mi'

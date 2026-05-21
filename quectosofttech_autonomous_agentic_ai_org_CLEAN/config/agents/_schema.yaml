@@ -1,0 +1,36 @@
+type: object
+required:
+- id
+- name
+- tier
+- role
+- department
+- reportsto
+- escalationto
+- model
+- access
+- approvalcontrol
+- raidconfig
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  tier:
+    type: integer
+  role:
+    type: string
+  department:
+    type: string
+  reportsto:
+    type: string
+  escalationto:
+    type: string
+  model:
+    type: object
+  access:
+    type: object
+  approvalcontrol:
+    type: object
+  raidconfig:
+    type: object

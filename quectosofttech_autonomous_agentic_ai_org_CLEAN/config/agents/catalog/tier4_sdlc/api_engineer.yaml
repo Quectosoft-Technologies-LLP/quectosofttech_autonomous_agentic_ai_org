@@ -1,0 +1,59 @@
+id: api_engineer
+name: Api Engineer
+tier: 4
+role: api_engineer
+department: engineering
+reportsto: engineering_vp
+escalationto: chief_technology_officer
+model:
+  provider: ollama
+  model: hermes-3
+  fallbackprovider: openai
+  fallbackmodel: gpt-4.1
+access:
+  read:
+  - project_requirements
+  - technical_design
+  - codebase
+  - test_reports
+  - raid_register
+  write:
+  - raid_register
+  - workspace_notes
+  execute:
+  - local_tools
+  blocked:
+  - secret_vault
+  - org_policy_override
+  memory_layers:
+    l1: write
+    l2: write
+    l3: read
+    l4: write
+    l5: none
+approvalcontrol:
+  agent_auto_for:
+  - writing_code
+  - drafting_docs
+  - creating_tests
+  - analysis
+  human_required_for:
+  - production_change
+  - policy_override
+  - compliance_override
+  - security_exception
+  confidence_threshold: 0.8
+raidconfig:
+  defaultthresholds:
+    automitigatebelow: 6
+  overridethresholds:
+    SECURITY:
+      automitigatebelow: 4
+      humanrequiredabove: 6
+    COMPLIANCE:
+      automitigatebelow: 3
+      humanrequiredabove: 4
+  autonomousmitigations:
+  - retrywithdifferentmodel
+  - add_guardrails
+  - request_more_context
