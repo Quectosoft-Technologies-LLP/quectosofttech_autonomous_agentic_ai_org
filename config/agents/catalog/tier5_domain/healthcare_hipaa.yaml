@@ -1,0 +1,39 @@
+agent_id: healthcare_hipaa_agent
+name: Healthcare HIPAA Agent
+tier: 5
+department: healthcare
+role: >
+  Deep domain specialist for healthcare. Applies regulatory knowledge,
+  domain standards, and compliance frameworks to agent outputs.
+reports_to: vp_healthcare_agent
+
+model:
+  default: hermes3:70b
+  task_overrides:
+    critical: claude-opus-4
+    compliance: claude-opus-4
+
+memory:
+  agent_private: true
+  team: true
+  department: true
+  project: true
+  organisation_read: true
+  organisation_write: false
+
+workspace:
+  isolated_container: true
+  network_policy: strict
+  read_only_fs: true
+  max_memory_mb: 4096
+
+raid_config:
+  auto_mitigate_below: 5
+  vp_review_from: 5
+  csuite_gate_from: 10
+  human_hitl_from: 15
+  areas: [COMPLIANCE, SECURITY, REPUTATIONAL, BUDGET]
+
+tools: [org_memory_mcp, project_memory_mcp, confluence_mcp, filesystem_mcp]
+skills: [healthcare_regulations, compliance_review, domain_documentation, audit_trail]
+org_policies: [corporate_governance, healthcare_compliance_policy]

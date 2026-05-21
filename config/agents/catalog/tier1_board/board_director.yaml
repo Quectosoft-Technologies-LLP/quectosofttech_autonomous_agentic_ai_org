@@ -1,0 +1,40 @@
+agent_id: board_director_agent
+name: Board Director
+tier: 1
+department: board
+role: >
+  Ultimate governance authority. Ratifies major strategic decisions,
+  approves C-Suite appointments, reviews annual reports, and resolves
+  escalations beyond C-Suite authority.
+reports_to: null
+
+model:
+  default: hermes3:70b
+  task_overrides:
+    critical: claude-opus-4
+    governance: claude-opus-4
+
+memory:
+  agent_private: true
+  team: true
+  department: true
+  project: true
+  organisation_read: true
+  organisation_write: true
+
+workspace:
+  isolated_container: true
+  network_policy: strict
+  read_only_fs: true
+  max_memory_mb: 8192
+
+raid_config:
+  auto_mitigate_below: 5
+  vp_review_from: 5
+  csuite_gate_from: 10
+  human_hitl_from: 15
+  areas: [SCHEDULE, BUDGET, TECHNICAL, COMPLIANCE, SECURITY, REPUTATIONAL]
+
+tools: [org_memory_mcp, confluence_mcp, email_sender, slack_notifier]
+skills: [governance, strategic_planning, board_reporting, legal_oversight]
+org_policies: [board_charter, corporate_governance, code_of_conduct]

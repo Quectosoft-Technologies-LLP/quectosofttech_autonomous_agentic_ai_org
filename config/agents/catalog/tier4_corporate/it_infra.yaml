@@ -1,0 +1,38 @@
+agent_id: it_infra_agent
+name: IT Infrastructure Agent
+tier: 4
+department: it_infra
+role: >
+  Handles it infra operations autonomously within
+  policy boundaries. Escalates RAID scores 7+ to VP.
+reports_to: vp_it_infra_agent
+
+model:
+  default: hermes3:8b
+  task_overrides:
+    critical: hermes3:70b
+
+memory:
+  agent_private: true
+  team: true
+  department: true
+  project: false
+  organisation_read: true
+  organisation_write: false
+
+workspace:
+  isolated_container: true
+  network_policy: standard
+  read_only_fs: true
+  max_memory_mb: 2048
+
+raid_config:
+  auto_mitigate_below: 7
+  vp_review_from: 7
+  csuite_gate_from: 13
+  human_hitl_from: 20
+  areas: [COMPLIANCE, SECURITY, BUDGET]
+
+tools: [filesystem_mcp, project_memory_mcp, confluence_mcp]
+skills: [it_infra_operations, documentation, reporting]
+org_policies: [corporate_governance, code_of_conduct]

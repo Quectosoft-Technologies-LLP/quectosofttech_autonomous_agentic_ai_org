@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quecto-platform
+  namespace: quecto-ai
+  labels:
+    app: quecto-platform
+    org: quectosoft-technologies-llp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quecto-platform
+  template:
+    metadata:
+      labels:
+        app: quecto-platform
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: platform
+          image: ghcr.io/quectosoft-technologies-llp/quecto-platform:0.3.2
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: quecto-secrets
+          resources:
+            requests: { cpu: "500m", memory: "1Gi" }
+            limits:   { cpu: "2",    memory: "4Gi" }
+          readinessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quecto-platform-svc
+  namespace: quecto-ai
+spec:
+  selector:
+    app: quecto-platform
+  ports:
+    - port: 80
+      targetPort: 8000
+  type: ClusterIP

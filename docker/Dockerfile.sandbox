@@ -1,0 +1,8 @@
+FROM python:3.12-slim
+LABEL maintainer="subrit@quectosofttech.com"
+# Sandbox: ultra-restricted — no network, read-only FS, seccomp profile
+RUN groupadd -r sandbox && useradd -r -g sandbox sandbox
+WORKDIR /sandbox
+USER sandbox
+# Code execution happens here — no pip, no apt, no network
+CMD ["python", "-c", "print('sandbox ready')"]

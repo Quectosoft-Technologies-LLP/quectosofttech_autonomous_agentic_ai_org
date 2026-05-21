@@ -1,0 +1,38 @@
+agent_id: hr_recruiter_agent
+name: HR Recruiter Agent
+tier: 4
+department: hr
+role: >
+  Handles hr operations autonomously within
+  policy boundaries. Escalates RAID scores 7+ to VP.
+reports_to: vp_hr_agent
+
+model:
+  default: hermes3:8b
+  task_overrides:
+    critical: hermes3:70b
+
+memory:
+  agent_private: true
+  team: true
+  department: true
+  project: false
+  organisation_read: true
+  organisation_write: false
+
+workspace:
+  isolated_container: true
+  network_policy: standard
+  read_only_fs: true
+  max_memory_mb: 2048
+
+raid_config:
+  auto_mitigate_below: 7
+  vp_review_from: 7
+  csuite_gate_from: 13
+  human_hitl_from: 20
+  areas: [COMPLIANCE, SECURITY, BUDGET]
+
+tools: [filesystem_mcp, project_memory_mcp, confluence_mcp]
+skills: [hr_operations, documentation, reporting]
+org_policies: [corporate_governance, code_of_conduct]

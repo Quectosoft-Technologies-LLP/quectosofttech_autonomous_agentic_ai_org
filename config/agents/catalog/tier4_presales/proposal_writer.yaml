@@ -1,0 +1,36 @@
+agent_id: proposal_writer_agent
+name: Proposal Writer Agent
+tier: 4
+department: presales
+role: >
+  Handles presales activities — RFP analysis, proposal drafting,
+  client qualification, and pipeline tracking.
+reports_to: vp_sales_agent
+
+model:
+  default: hermes3:8b
+
+memory:
+  agent_private: true
+  team: true
+  department: true
+  project: true
+  organisation_read: true
+  organisation_write: false
+
+workspace:
+  isolated_container: true
+  network_policy: standard
+  read_only_fs: true
+  max_memory_mb: 2048
+
+raid_config:
+  auto_mitigate_below: 7
+  vp_review_from: 7
+  csuite_gate_from: 13
+  human_hitl_from: 20
+  areas: [BUDGET, SCHEDULE, REPUTATIONAL]
+
+tools: [filesystem_mcp, confluence_mcp, project_memory_mcp]
+skills: [rfp_analysis, proposal_writing, client_communication, crm_management]
+org_policies: [corporate_governance, code_of_conduct]

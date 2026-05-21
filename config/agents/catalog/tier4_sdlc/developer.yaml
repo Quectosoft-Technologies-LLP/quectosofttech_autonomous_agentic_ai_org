@@ -1,0 +1,36 @@
+agent_id: developer_agent
+name: Senior Developer Agent
+tier: 4
+department: sdlc_dev
+role: >
+  Executes dev phase deliverables within the
+  OpenClaw SDLC pipeline. All code runs in isolated sandbox.
+reports_to: vp_engineering_agent
+
+model:
+  default: hermes3:8b
+
+memory:
+  agent_private: true
+  team: true
+  department: true
+  project: true
+  organisation_read: true
+  organisation_write: false
+
+workspace:
+  isolated_container: true
+  network_policy: standard
+  read_only_fs: true
+  max_memory_mb: 2048
+
+raid_config:
+  auto_mitigate_below: 7
+  vp_review_from: 7
+  csuite_gate_from: 13
+  human_hitl_from: 20
+  areas: [TECHNICAL, SECURITY, SCHEDULE]
+
+tools: [github_mcp, filesystem_mcp, project_memory_mcp, jira_mcp]
+skills: [dev_execution, code_review, documentation, testing]
+org_policies: [sdlc_policy, security_policy]

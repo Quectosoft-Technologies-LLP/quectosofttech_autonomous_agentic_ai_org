@@ -1,0 +1,38 @@
+agent_id: vp_finance_agent
+name: VP Finance & Accounts
+tier: 3
+department: finance
+role: >
+  Leads the finance function. Manages Tier-4 agents,
+  approves outputs with RAID score 7-12, escalates 13+ to C-Suite.
+reports_to: cto_agent
+
+model:
+  default: hermes3:70b
+  task_overrides:
+    critical: claude-opus-4
+
+memory:
+  agent_private: true
+  team: true
+  department: true
+  project: true
+  organisation_read: true
+  organisation_write: false
+
+workspace:
+  isolated_container: true
+  network_policy: standard
+  read_only_fs: true
+  max_memory_mb: 4096
+
+raid_config:
+  auto_mitigate_below: 7
+  vp_review_from: 7
+  csuite_gate_from: 13
+  human_hitl_from: 20
+  areas: [SCHEDULE, BUDGET, TECHNICAL, COMPLIANCE, SECURITY]
+
+tools: [org_memory_mcp, github_mcp, confluence_mcp, jira_mcp, project_memory_mcp]
+skills: [team_leadership, sprint_planning, risk_management, reporting]
+org_policies: [corporate_governance, sdlc_policy, code_of_conduct]

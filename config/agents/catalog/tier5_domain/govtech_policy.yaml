@@ -1,0 +1,39 @@
+agent_id: govtech_policy_agent
+name: GovTech Policy Agent
+tier: 5
+department: govtech
+role: >
+  Deep domain specialist for govtech. Applies regulatory knowledge,
+  domain standards, and compliance frameworks to agent outputs.
+reports_to: vp_govtech_agent
+
+model:
+  default: hermes3:70b
+  task_overrides:
+    critical: claude-opus-4
+    compliance: claude-opus-4
+
+memory:
+  agent_private: true
+  team: true
+  department: true
+  project: true
+  organisation_read: true
+  organisation_write: false
+
+workspace:
+  isolated_container: true
+  network_policy: strict
+  read_only_fs: true
+  max_memory_mb: 4096
+
+raid_config:
+  auto_mitigate_below: 5
+  vp_review_from: 5
+  csuite_gate_from: 10
+  human_hitl_from: 15
+  areas: [COMPLIANCE, SECURITY, REPUTATIONAL, BUDGET]
+
+tools: [org_memory_mcp, project_memory_mcp, confluence_mcp, filesystem_mcp]
+skills: [govtech_regulations, compliance_review, domain_documentation, audit_trail]
+org_policies: [corporate_governance, govtech_compliance_policy]
